@@ -12,7 +12,7 @@ RGImagePicker is a component which could help you elegantly pick image, gif, vid
 
 - Pick GIF
 
-	![ab_gif](https://user-images.githubusercontent.com/14158970/64630043-dd68f600-d426-11e9-9175-9bdd2da03295.png)
+  ![ab_gif](https://user-images.githubusercontent.com/14158970/64630043-dd68f600-d426-11e9-9175-9bdd2da03295.png)
 
 - Pick Video
 
@@ -99,6 +99,15 @@ RGImagePickerConfig *config = [self onlyImageConfigWithBackgroundImage:self.back
   // Began multi load resource
 }];
 ```
+Present by yourself
+```
+RGImagePickerConfig *config = [self onlyImageConfigWithBackgroundImage:self.backgroundView.image];
+UINavigationController *nvc = [RGImagePicker pickerWithMaxCount:10 config:config pickResult:^(NSArray<PHAsset *> * _Nonnull phassets, UIViewController * _Nonnull pickerViewController) {
+  // Began multi load resource
+}];
+nvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+[self presentViewController:nvc animated:YES completion:nil];
+```
 
 ### Load Resource
 ```objective-c
@@ -163,9 +172,8 @@ RGImagePickerLoadOption option = RGImagePickerLoadVideoFirst|RGImagePickerLoadVi
                            }];
 ```
 
-### Image Edit
-under development
-
-### Picker Sort
-under development
+### Under Development
+- [ ] Image Edit
+- [ ] Picker Sort
+- [ ] Pick from Camera
 
