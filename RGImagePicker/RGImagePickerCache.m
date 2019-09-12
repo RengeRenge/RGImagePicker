@@ -468,7 +468,7 @@ NSNotificationName RGImagePickerCachePickPhotosHasChanged = @"RGImagePickerCache
 }
 
 - (NSString *_Nullable)titleForImageGallery:(RGImageGallery *)imageGallery atIndex:(NSInteger)index {
-    return [NSString stringWithFormat:@"%ld/%lu", index+1, (unsigned long)self.pickPhotos.count];
+    return [NSString stringWithFormat:@"%ld/%lu", (long)index+1, (unsigned long)self.pickPhotos.count];
 }
 
 - (void)imagePickerViewGalleryDelegate:(RGImagePickerViewGalleryDelegate *)delegate selectAssetAtIndex:(NSUInteger)index {

@@ -759,7 +759,7 @@ static PHImageRequestOptions *requestOptions = nil;
         if (landscape) {
             return title;
         }
-        return [title stringByAppendingFormat:@"\n%ld", index+1];
+        return [title stringByAppendingFormat:@"\n%ld", (long)index+1];
     } else {
         return @"";
     }

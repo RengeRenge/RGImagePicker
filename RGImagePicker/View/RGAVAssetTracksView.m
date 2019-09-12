@@ -102,7 +102,7 @@
 
 - (void)__configTimeLabelWithLeftSecond:(NSInteger)left {
     left = MAX(left, 0);
-    NSString *leftString = [NSString stringWithFormat:@"-%02ld:%02ld", left/60, left%60];
+    NSString *leftString = [NSString stringWithFormat:@"-%02d:%02d", (int)left/60, (int)left%60];
     _leftTimeLabel.text = leftString;
 }
 
