@@ -76,6 +76,7 @@
 - (void)setAsset:(AVAsset *)asset {
     _asset = asset;
     _generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    _generator.appliesPreferredTrackTransform = YES;
     _fps = [[[_asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] nominalFrameRate];
     [self loadImages];
 }
