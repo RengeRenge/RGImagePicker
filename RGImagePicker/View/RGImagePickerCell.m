@@ -170,7 +170,8 @@
     void(^loadImageFromManager)(UIImage *cacheImage)= ^(UIImage *cacheImage){
         if (cacheImage) {
             CGSize size = cacheImage.rg_pixSize;
-            if (size.width >= targetSize.width || size.height >= targetSize.height) {
+            BOOL qualityOK = size.width >= targetSize.width - 10 || size.height >= targetSize.height - 10;
+            if (qualityOK) {
                 [self __setImage:cacheImage withAsset:asset sync:sync loadStatus:loadStatus];
                 return;
             }
@@ -185,7 +186,7 @@
         }
         
         __block BOOL getId = NO;
-        self.lastRequestId = [manager requestImageForAsset:asset targetSize:targetSize contentMode:PHImageContentModeDefault options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+        self.lastRequestId = [manager requestImageForAsset:asset targetSize:targetSize contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
             if (getId) {
                 self.lastRequestId = 0;
             }
