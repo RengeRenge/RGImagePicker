@@ -352,16 +352,14 @@
         UIFont *font = [UIFont systemFontOfSize:12.0 weight:UIFontWeightMedium];
 #pragma clang diagnostic pop
         
-        // 文字
-        CTFontRef fontRef = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
-        CGColorRef color = [UIColor whiteColor].CGColor;
-        
         NSMutableAttributedString *attStrs =
         [[NSMutableAttributedString alloc]
          initWithString:text
          attributes:@{
-                      (__bridge NSString*)kCTFontAttributeName:(__bridge id)fontRef,
-                      (__bridge NSString*)kCTForegroundColorAttributeName:(__bridge id)color,
+             NSFontAttributeName: font,
+             NSForegroundColorAttributeName: [UIColor whiteColor]
+//                      (__bridge NSString*)kCTFontAttributeName:(__bridge id)fontRef,
+//                      (__bridge NSString*)kCTForegroundColorAttributeName:(__bridge id)color,
                       }];
         
         CFAttributedStringRef strRef = (__bridge CFAttributedStringRef)(attStrs);
@@ -387,7 +385,6 @@
         
         // 释放
         CGPathRelease(path);
-        CFRelease(fontRef);
         CFRelease(frameSetter);
         CFRelease(frame);
         
