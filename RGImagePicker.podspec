@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "RGImagePicker"
-  s.version      = "1.0.1"
+  s.version      = "1.0.2"
   s.summary      = "RGImagePicker is a component which could help you elegantly pick image, gif, video and LivePhoto"
 
   # This description is used to generate tags and improve search results.
