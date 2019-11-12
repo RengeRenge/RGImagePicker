@@ -27,6 +27,7 @@
 #import "RGImagePickerViewGalleryDelegate.h"
 
 static PHImageRequestOptions *requestOptions = nil;
+static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
 
 @interface RGImagePickerViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, PHPhotoLibraryChangeObserver, RGImagePickerCellDelegate, RGImageGalleryDataSource, RGImageGalleryPushTransitionDelegate, RGImagePickerViewGalleryDelegateTarget>
 
@@ -453,7 +454,7 @@ static PHImageRequestOptions *requestOptions = nil;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    RGImagePickerCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"RGImagePickerCell" forIndexPath:indexPath];
+    RGImagePickerCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_RGImagePickerCellId forIndexPath:indexPath];
     cell.delegate = self;
     if (indexPath.row >= _assets.count) {
         return cell;

@@ -149,11 +149,6 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
     };
     
     if (@available(iOS 9.0, *)) {
-        if (!asset.rg_isLive && asset.mediaSubtypes != 32) { // gif
-            oldMethod();
-            return;
-        }
-        
         if (asset.rg_isLive) {
             if (@available(iOS 9.1, *)) {
                 [self __loadLivePhotoFromAsset:asset networkAccessAllowed:NO needStaticImage:NO progressHandler:nil completion:^(NSDictionary * _Nullable resource, NSError * _Nullable error) {
