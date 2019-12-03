@@ -341,10 +341,10 @@
                                 ];
             UIBezierPath *gradientBarBgPath = [UIBezierPath bezierPathWithRect:rect];
             [gradientBarBgPath
-             rg_drawLinearGradient:context
-             locations:locations
+             rg_drawGradient:context
              colors:colors
-             drawType:RGUIBezierDrawTypeUTD];
+             locations:locations
+             drawType:RGDrawTypeTopToBottom];
         }
         
 #pragma clang diagnostic push
