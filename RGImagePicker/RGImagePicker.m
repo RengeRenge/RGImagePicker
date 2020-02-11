@@ -472,7 +472,7 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
             NSData *data = [NSData dataWithContentsOfURL:url];
             doCallBack(data, url);
         } else { // 比如慢动作视频 AVComposition
-            [self __convertAvcomposition:avAsset completion:^(NSData *data, NSURL *url) {
+            [self __convertAvcomposition:avAsset localIdentifier:asset.localIdentifier completion:^(NSData *data, NSURL *url) {
                 doCallBack(data, url);
             }];
         }
@@ -670,14 +670,27 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
     return NO;
 }
 
-+ (void)__convertAvcomposition:(AVAsset *)composition completion:(void (^)(NSData *data, NSURL *url))completion {
++ (void)__convertAvcomposition:(AVAsset *)composition localIdentifier:(NSString *)localIdentifier completion:(void (^)(NSData *data, NSURL *url))completion {
+    
+    // https://stackoverflow.com/questions/26152396/how-to-access-nsdata-nsurl-of-slow-motion-videos-using-photokit
+    
+    localIdentifier = [localIdentifier componentsSeparatedByString:@"/"].firstObject;
+    NSString *basePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
+    NSString *exportPath = [basePath stringByAppendingPathComponent:[NSString stringWithFormat:@"RGImagePicker/%@.mov", localIdentifier]];
+    NSString *directory = [exportPath stringByDeletingLastPathComponent];
+    
+    NSError *error = nil;
+    if (![NSFileManager.defaultManager fileExistsAtPath:directory]) {
+        [NSFileManager.defaultManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error];
+    }
+    
     // 导出视频
     AVAssetExportSession *exporter = [AVAssetExportSession exportSessionWithAsset:composition presetName:AVAssetExportPresetHighestQuality];
-    // 生成一个文件路径
-    NSString *exportPath = [NSTemporaryDirectory() stringByAppendingString:[NSString stringWithFormat:@"RGTemp/%@-video.mov", NSUUID.UUID.UUIDString]];
-    NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
-    // 导出
-    if (exporter) {
+    if (!error && exporter) {
+        
+        [NSFileManager.defaultManager removeItemAtPath:exportPath error:NULL];
+        
+        NSURL *exportURL = [NSURL fileURLWithPath:exportPath];
         exporter.outputURL = exportURL;
         exporter.outputFileType = AVFileTypeQuickTimeMovie;
         exporter.shouldOptimizeForNetworkUse = YES;
