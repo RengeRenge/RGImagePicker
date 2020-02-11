@@ -156,7 +156,7 @@
       loadStatus:(BOOL)loadStatus
        resetView:(BOOL)resetView {
     self.cache = cache;
-    if (self.asset == asset || [self isCurrentAsset:asset]) {
+    if ([self isCurrentAsset:asset]) {
         return;
     }
     self.asset = asset;

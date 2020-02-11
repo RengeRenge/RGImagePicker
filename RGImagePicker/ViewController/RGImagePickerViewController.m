@@ -417,6 +417,14 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     self.needRequestLoadStatus = NO;
     [self updateCachedAssets];
+//    CGFloat speed = fabs(self.lastOffset.y - scrollView.contentOffset.y);
+//    if (speed < 10) {
+//        self.needRequestLoadStatus = YES;
+//        NSLog(@"load! %f", speed);
+//    } else {
+//        self.needRequestLoadStatus = NO;
+//    }
+//    self.lastOffset = scrollView.contentOffset;
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
@@ -469,8 +477,7 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
     
     PHAsset *asset = _assets[indexPath.row];
     CGSize targetSize = _needRequestLoadStatus ? _thumbSize : _lowThumbSize;
-    [cell setAsset:asset photoManager:_imageManager options:requestOptions targetSize:targetSize cache:_cache sync:YES loadStatus:_needRequestLoadStatus resetView:_needResetView];
-    
+    [cell setAsset:asset photoManager:_imageManager options:requestOptions targetSize:targetSize cache:_cache sync:!_needRequestLoadStatus loadStatus:_needRequestLoadStatus resetView:_needResetView];
     if ([self.cache contain:asset]) {
         [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         [cell setSelected:YES];
