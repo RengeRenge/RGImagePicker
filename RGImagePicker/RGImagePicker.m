@@ -472,8 +472,12 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
             NSData *data = [NSData dataWithContentsOfURL:url];
             doCallBack(data, url);
         } else { // 比如慢动作视频 AVComposition
-            [self __convertAvcomposition:avAsset localIdentifier:asset.localIdentifier completion:^(NSData *data, NSURL *url) {
-                doCallBack(data, url);
+            [self __convertAvcomposition:avAsset localIdentifier:asset.localIdentifier completion:^(NSData *data, NSURL *url, NSError *error) {
+                if (data && url) {
+                    doCallBack(data, url);
+                } else {
+                    callBackIfNeed(nil, error);
+                }
             }];
         }
     }];
@@ -670,7 +674,7 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
     return NO;
 }
 
-+ (void)__convertAvcomposition:(AVAsset *)composition localIdentifier:(NSString *)localIdentifier completion:(void (^)(NSData *data, NSURL *url))completion {
++ (void)__convertAvcomposition:(AVAsset *)composition localIdentifier:(NSString *)localIdentifier completion:(void (^)(NSData *data, NSURL *url, NSError *error))completion {
     
     // https://stackoverflow.com/questions/26152396/how-to-access-nsdata-nsurl-of-slow-motion-videos-using-photokit
     
@@ -700,11 +704,11 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (AVAssetExportSessionStatusCompleted == exporter.status) {   // 导出完成
                     if (completion) {
-                        completion(data, URL);
+                        completion(data, URL, nil);
                     }
                 } else {
                     if (completion) {
-                        completion(nil, nil);
+                        completion(nil, nil, exporter.error);
                     }
                 }
             });
@@ -712,7 +716,7 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
     } else {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
-                completion(nil, nil);
+                completion(nil, nil, error);
             }
         });
     }
