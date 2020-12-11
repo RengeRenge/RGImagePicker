@@ -752,7 +752,7 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
 }
 
 - (UIColor *)titleColorForImageGallery:(RGImageGallery *)imageGallery {
-    return [UIColor blackColor];
+    return [UIColor rg_labelColor];
 }
 
 - (UIColor *)tintColorForImageGallery:(RGImageGallery *)imageGallery {

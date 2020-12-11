@@ -395,9 +395,15 @@
     UIButton *button = [[UIButton alloc] init];
     [button setBackgroundImage:[UIImage rg_templateImageWithSize:CGSizeMake(1, 1)] forState:UIControlStateNormal];
     button.layer.cornerRadius = 10;
-    button.titleLabel.font = [UIFont systemFontOfSize:16];
+    if (@available(iOS 8.2, *)) {
+        button.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+    } else {
+        button.titleLabel.font = [UIFont systemFontOfSize:16];
+    }
     button.clipsToBounds = YES;
     countItem.customView = button;
+    
+    [button setTitleColor:UIColor.rg_systemBackgroundColor forState:UIControlStateNormal];
     [button addTarget:self action:@selector(__showPickerPhotos:) forControlEvents:UIControlEventTouchUpInside];
     [array addObject:countItem];
     

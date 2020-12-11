@@ -22,7 +22,7 @@ typedef void(^RGImagePickResult)(NSArray <PHAsset *> *phassets, UIViewController
 /// NSString or NSAttributedString
 @property (nonatomic, copy, nullable) id privacyDescriptionString;
 
-/// default white
+/// default systemBackgroundColor
 @property (nonatomic, strong, nullable) UIColor *backgroundColor;
 @property (nonatomic, strong, nullable) UIImage *backgroundImage;
 @property (nonatomic, assign) CGFloat backgroundBlurRadius;

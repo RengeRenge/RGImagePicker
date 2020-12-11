@@ -36,7 +36,7 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
 
 - (UIColor *)backgroundColor {
     if (!_backgroundColor) {
-        _backgroundColor =  [UIColor whiteColor];
+        _backgroundColor =  [UIColor rg_systemBackgroundColor];
     }
     return _backgroundColor;
 }
@@ -119,7 +119,7 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
     [nvg setViewControllers:@[list, vc] animated:NO];
     nvg.modalPresentationStyle = UIModalPresentationOverFullScreen;
     nvg.tintColor = cache.config.tintColor;
-    nvg.titleColor = [UIColor blackColor];
+    nvg.titleColor = [UIColor rg_labelColor];
     
     UIBarButtonItem *camera = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:nil action:nil];
     list.navigationItem.backBarButtonItem = camera;
