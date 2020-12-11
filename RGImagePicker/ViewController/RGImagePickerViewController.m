@@ -90,44 +90,47 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
     self.view.tintColor = self.config.tintColor;
     self.view.backgroundColor = self.config.backgroundColor;
     
-    if (self.config.backgroundImage) {
-        UIImage *image = self.config.backgroundImage;
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        imageView.clipsToBounds = YES;
-        
-        UILabel *label = nil;
-        if (PHPhotoLibrary.authorizationStatus != PHAuthorizationStatusAuthorized) {
-            label = [[UILabel alloc] initWithFrame:imageView.bounds];
-            label.numberOfLines = 0;
-            if ([self.config.privacyDescriptionString isKindOfClass:NSString.class]) {
-                label.text = self.config.privacyDescriptionString;
-            } else {
-                label.attributedText = self.config.privacyDescriptionString;
-            }
-            label.textAlignment = NSTextAlignmentCenter;
+    UILabel *label = nil;
+    if (PHPhotoLibrary.authorizationStatus != PHAuthorizationStatusAuthorized) {
+        label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.numberOfLines = 0;
+        if ([self.config.privacyDescriptionString isKindOfClass:NSString.class]) {
+            label.text = self.config.privacyDescriptionString;
+        } else {
+            label.attributedText = self.config.privacyDescriptionString;
         }
+        label.textAlignment = NSTextAlignmentCenter;
+    }
+    
+    UIImage *image = self.config.backgroundImage;
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
+    
+    if (self.config.backgroundBlurRadius || label) {
+        RGBluuurView *bluuurView = [[RGBluuurView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+        bluuurView.blurRadius = self.config.backgroundBlurRadius;
+        bluuurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        bluuurView.frame = imageView.bounds;
+        [imageView addSubview:bluuurView];
         
-        if (self.config.backgroundBlurRadius || label) {
-            RGBluuurView *bluuurView = [[RGBluuurView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-            bluuurView.blurRadius = self.config.backgroundBlurRadius;
-            bluuurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            bluuurView.frame = imageView.bounds;
-            [imageView addSubview:bluuurView];
-            
-//            [bluuurView.contentView addSubview:label];
-            if (label) {
+        if (label) {
+            label.frame = imageView.bounds;
+            if (image) {
                 UIVisualEffectView *subEffectView = [[UIVisualEffectView alloc] initWithEffect:[UIVibrancyEffect effectForBlurEffect:(UIBlurEffect *)bluuurView.effect]];
                 subEffectView.frame = bluuurView.bounds;
                 subEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [bluuurView.contentView addSubview:subEffectView];
                 [subEffectView.contentView addSubview:label];
+            } else {
+                [imageView addSubview:label];
             }
         }
-        _privacyLabel = label;
-        self.backgroundView = imageView;
-        [self.view addSubview:self.backgroundView];
     }
+    _privacyLabel = label;
+    _backgroundView = imageView;
+    
+    [self.view addSubview:_backgroundView];
 
     [self.view addSubview:self.collectionView];
     
