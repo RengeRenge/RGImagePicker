@@ -714,6 +714,7 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
                 }];
             } else {
                 self.assets = newAssets;
+                self.galleryDelegate.assets = self.assets;
                 [self __doReloadData];
             }
         }
