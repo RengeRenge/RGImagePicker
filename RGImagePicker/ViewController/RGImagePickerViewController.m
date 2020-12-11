@@ -90,17 +90,14 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
     self.view.tintColor = self.config.tintColor;
     self.view.backgroundColor = self.config.backgroundColor;
     
-    UILabel *label = nil;
-    if (PHPhotoLibrary.authorizationStatus != PHAuthorizationStatusAuthorized) {
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.numberOfLines = 0;
-        if ([self.config.privacyDescriptionString isKindOfClass:NSString.class]) {
-            label.text = self.config.privacyDescriptionString;
-        } else {
-            label.attributedText = self.config.privacyDescriptionString;
-        }
-        label.textAlignment = NSTextAlignmentCenter;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.numberOfLines = 0;
+    if ([self.config.privacyDescriptionString isKindOfClass:NSString.class]) {
+        label.text = self.config.privacyDescriptionString;
+    } else {
+        label.attributedText = self.config.privacyDescriptionString;
     }
+    label.textAlignment = NSTextAlignmentCenter;
     
     UIImage *image = self.config.backgroundImage;
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
@@ -210,6 +207,10 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
     [self __doReloadData];
 }
 
+- (void)phAuthorizationStatusDidChange {
+    [self __configViewWithCurrentCollection:NO];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized) {
@@ -309,12 +310,12 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
     if (!self.isViewLoaded) {
         return;
     }
-    if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized) {
+    if (PHPhotoLibrary.authorizationStatus != PHAuthorizationStatusAuthorized) {
+        _privacyLabel.hidden = PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusNotDetermined;
         return;
     }
     if (_privacyLabel) {
-        [_privacyLabel removeFromSuperview];
-        _privacyLabel = nil;
+        _privacyLabel.hidden = YES;
     }
     if (!_imageManager) {
         _imageManager = (PHCachingImageManager *)[PHCachingImageManager new];

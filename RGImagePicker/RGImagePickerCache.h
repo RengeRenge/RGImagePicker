@@ -76,6 +76,8 @@ extern NSNotificationName RGImagePickerCachePickPhotosHasChanged;
 
 @property (nonatomic, strong) RGImagePickerCache *cache;
 
+- (void)phAuthorizationStatusDidChange;
+
 @end
 
 NS_ASSUME_NONNULL_END

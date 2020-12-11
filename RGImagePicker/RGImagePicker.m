@@ -100,6 +100,9 @@ const NSString *RGImagePickerResourceAVAssetInstance = @"avssset";
     
     if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [vc phAuthorizationStatusDidChange];
+            });
             if (status == PHAuthorizationStatusAuthorized) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     loadData();
