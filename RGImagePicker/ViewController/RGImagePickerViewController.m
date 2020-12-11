@@ -737,13 +737,26 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
 - (void)imagePickerCell:(RGImagePickerCell *)cell touchForce:(CGFloat)force maximumPossibleForce:(CGFloat)maximumPossibleForce {
     if (maximumPossibleForce) {
         maximumPossibleForce /= 2.5f;
-        self.view.alpha = MAX(0, (maximumPossibleForce - force) / maximumPossibleForce);
+        CGFloat next = MAX(0, (maximumPossibleForce - force) / maximumPossibleForce);
+        if (self.view.alpha == 1.0f && next != self.view.alpha) {
+            [self feedback];
+        }
+        self.view.alpha = next;
     }
 }
 
 - (void)didCheckForImagePickerCell:(RGImagePickerCell *)cell {
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
     [self __selectItemAtIndex:indexPath.row orCell:cell];
+    [self feedback];
+}
+
+- (void)feedback {
+    if (@available(iOS 10.0, *)) {
+        UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+        [generator prepare];
+        [generator impactOccurred];
+    }
 }
 
 #pragma mark - RGImageGalleryDataSource
@@ -851,6 +864,7 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
 
 - (void)imagePickerViewGalleryDelegate:(RGImagePickerViewGalleryDelegate *)delegate selectAssetAtIndex:(NSUInteger)index {
     [self __selectItemAtIndex:index orCell:nil];
+    [self feedback];
 }
 
 #pragma mark - RGImagePickerCachePickPhotosHasChanged
