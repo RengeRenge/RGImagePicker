@@ -872,7 +872,6 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
 
 - (void)imagePickerViewGalleryDelegate:(RGImagePickerViewGalleryDelegate *)delegate selectAssetAtIndex:(NSUInteger)index {
     [self __selectItemAtIndex:index orCell:nil];
-    [self feedback];
 }
 
 #pragma mark - RGImagePickerCachePickPhotosHasChanged
