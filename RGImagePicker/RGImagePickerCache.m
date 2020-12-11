@@ -406,9 +406,6 @@ NSNotificationName RGImagePickerCachePickPhotosHasChanged = @"RGImagePickerCache
 }
 
 - (void)callBack:(UIViewController *)viewController {
-    if (![viewController isKindOfClass:UIViewController.class]) {
-        viewController = [UIViewController rg_topViewController];
-    }
     if (_pickResult) {
         _pickResult(_pickPhotos, viewController);
     }
