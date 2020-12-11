@@ -571,6 +571,16 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
     }
     
     BOOL isFull = self.cache.isFull;
+    void(^updateCollectionViewIfNeed)(void) = ^{
+        if (self.cache.isFull != isFull) {
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            NSMutableArray *visiable = [NSMutableArray arrayWithArray:self.collectionView.indexPathsForVisibleItems];
+            [visiable removeObject:indexPath];
+            [self.collectionView reloadItemsAtIndexPaths:visiable];
+            [CATransaction commit];
+        }
+    };
     
     if (indexPath) {
         if ([self.cache contain:asset]) {
@@ -592,20 +602,14 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
                             [cell setSelected:YES animated:YES];
                             [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
                         }
+                        updateCollectionViewIfNeed();
                     }
                     [self __configViewWhenCacheChanged];
                 }
             }];
         }
     }
-    if (self.cache.isFull != isFull) {
-        [CATransaction begin];
-        [CATransaction setDisableActions:YES];
-        NSMutableArray *visiable = [NSMutableArray arrayWithArray:self.collectionView.indexPathsForVisibleItems];
-        [visiable removeObject:indexPath];
-        [self.collectionView reloadItemsAtIndexPaths:visiable];
-        [CATransaction commit];
-    }
+    updateCollectionViewIfNeed();
     [self __configViewWhenCacheChanged];
 }
 
