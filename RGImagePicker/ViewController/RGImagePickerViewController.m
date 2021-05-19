@@ -105,7 +105,8 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
     imageView.clipsToBounds = YES;
     
     if (self.config.backgroundBlurRadius || label) {
-        RGBluuurView *bluuurView = [[RGBluuurView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+        RGBlurEffect *effect = [RGBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        RGBluuurView *bluuurView = [[RGBluuurView alloc] initWithEffect:effect];
         bluuurView.blurRadius = self.config.backgroundBlurRadius;
         bluuurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         bluuurView.frame = imageView.bounds;
@@ -764,6 +765,8 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
         UIImpactFeedbackGenerator *generator = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
         [generator prepare];
         [generator impactOccurred];
+    } else {
+        AudioServicesPlaySystemSound(1520);
     }
 }
 
@@ -1022,7 +1025,7 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
             imageGallery.delegate = self.galleryDelegate;
             imageGallery.additionUIConfig = self.galleryDelegate;
             
-            gesture.view.rg_originSize = [self.collectionView cellForItemAtIndexPath:path].frame.size;
+            gesture.rg_gestureOriginSize = [self.collectionView cellForItemAtIndexPath:path].frame.size;
             
             imageGallery.pushFromView = YES;
             
@@ -1066,7 +1069,7 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
                 [self.imageGallery updateInteractionPushSize:size];
                 
                 UIView *view = [self.imageGallery interactionPushView];
-                CGFloat progress = (view.frame.size.width - gesture.view.rg_originSize.width) / self.view.frame.size.width;
+                CGFloat progress = (view.frame.size.width - gesture.rg_gestureOriginSize.width) / self.view.frame.size.width;
                 [self.imageGallery updateInteractionPushProgress:progress];
             }
             break;
@@ -1079,7 +1082,7 @@ static NSString *_RGImagePickerCellId = @"RGImagePickerCell";
             UIView *view = [self.imageGallery interactionPushView];
             CGFloat progress = [self.imageGallery interactionPushProgress];
             if (!progress) {
-                progress = (view.frame.size.width - gesture.view.rg_originSize.width) / self.view.frame.size.width;
+                progress = (view.frame.size.width - gesture.rg_gestureOriginSize.width) / self.view.frame.size.width;
             }
             [self.imageGallery finishInteractionPush:gesture.scale >= 1 progress:progress];
             break;

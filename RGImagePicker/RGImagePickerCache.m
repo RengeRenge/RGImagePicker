@@ -11,6 +11,7 @@
 #import "RGImagePicker.h"
 #import <FLAnimatedImageView_RGWrapper/FLAnimatedImageView+RGWrapper.h>
 #import <RGUIKit/RGUIKit.h>
+#import <RGRunTime/RGRunTime.h>
 #import "RGImageGallery.h"
 #import "RGImagePickerViewGalleryDelegate.h"
 #import "UIImage+RGPickerIcon.h"

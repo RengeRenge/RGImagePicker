@@ -9,6 +9,7 @@
 #import "RGImagePickerViewGalleryDelegate.h"
 #import "RGAVAssetTracksView.h"
 #import "AVPlayer+RGSeekSmoothly.h"
+#import <RGRunTime/RGRunTime.h>
 
 @interface RGImagePickerViewGalleryDelegate ()
 

@@ -9,6 +9,7 @@
 #import "RGImageAlbumListViewController.h"
 #import "RGImagePickerViewController.h"
 #import <RGUIKit/RGUIKit.h>
+#import <RGRunTime/RGRunTime.h>
 
 #define RGAlbumListRowHeight 46
 
